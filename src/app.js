@@ -10,11 +10,15 @@ function loadMovies(cb) {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {ohshit:''};
+    this.state = {
+      ohshit:'',
+    };
   }
 
   componentDidMount() {
-    loadMovies(json => this.setState({ohshit: JSON.stringify(json)}));
+    loadMovies(json => this.setState({
+      ohshit: JSON.stringify(json),
+    }));
   }
 
   render() {
