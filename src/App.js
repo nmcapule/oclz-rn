@@ -1,23 +1,26 @@
-import React, { Component } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import React from 'react';
+import { Text, View } from 'react-native';
 
-export default class App extends Component {
+function loadMovies(cb) {
+  fetch('https://facebook.github.io/react-native/movies.json')
+      .then(response => response.json())
+      .then(json => cb(json));
+}
+
+export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {ohshit:''};
+  }
+
+  componentDidMount() {
+    loadMovies(json => this.setState({ohshit: JSON.stringify(json)}));
   }
 
   render() {
     return (
-      <View style={{padding: 10}}>
-        <TextInput
-          style={{height: 40}}
-          placeholder="Type here to translate!"
-          onChangeText={(text) => this.setState({text})}
-        />
-        <Text style={{padding: 10, fontSize: 42}}>
-          {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
-        </Text>
+      <View>
+        <Text>{this.state.ohshit}</Text>
       </View>
     );
   }
