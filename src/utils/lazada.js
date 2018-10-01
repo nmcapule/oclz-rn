@@ -33,10 +33,15 @@ export async function request(credentials, endpoint, payload, extras) {
   }
   parameters['sign'] = sign(appKey, endpoint, parameters);
 
-  const url = domain + endpoint;
+  const esc = encodeURIComponent;
+  const query = Object.keys(parameters)
+      .map(k => esc(k) + '=' + esc(parameters[k]))
+      .join('&');
+
+  const url = `${domain}${endpoint}?${query}`;
 
   // TODO(ncapule): Handle error returns.
-  const response = await fetch(url)
+  const response = await fetch(url, {mode: 'no-cors'})
   const json = await response.json();
 
   return json;
