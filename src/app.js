@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import * as nacl from 'tweetnacl-util';
-import * as sha256 from 'fast-sha256';
+import jssha from 'jssha';
 
 function loadMovies(cb) {
   fetch('https://facebook.github.io/react-native/movies.json')
@@ -20,12 +19,11 @@ export default class App extends React.Component {
 
   componentDidMount() {
     loadMovies(json => {
-      const strjson = JSON.stringify(json);
-      const utf8in = nacl.decodeUTF8(strjson);
-      const utf8out = sha256.hmac('mahkey', utf8in)
-      // const data = nacl.encodeUTF8(utf8out);
-
-      this.setState({data: utf8out});
+      const codec = new jssha("SHA-256", "TEXT");
+      codec.setHMACKey("abc", "TEXT");
+      codec.update(JSON.stringify(json));
+      const data = codec.getHMAC("HEX");
+      this.setState({data});
     });
   }
 

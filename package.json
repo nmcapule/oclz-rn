@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "fast-sha256": "^1.1.0",
+    "jssha": "^2.3.1",
     "react": "^16.5.2",
     "react-art": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-native": "^0.57.1",
     "react-native-web": "^0.9.1",
-    "react-scripts": "1.1.5",
-    "tweetnacl-util": "^0.15.0"
+    "react-scripts": "1.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
