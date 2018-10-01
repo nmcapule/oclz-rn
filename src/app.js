@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import jssha from 'jssha';
+import * as lazada from './utils/lazada';
 
-function loadMovies(cb) {
-  fetch('https://facebook.github.io/react-native/movies.json')
-      .then(response => response.json())
-      .then(json => cb(json));
+async function loadMovies(cb) {
+  const response = await fetch('https://facebook.github.io/react-native/movies.json')
+  const json = await response.json();
+  cb(json);
 }
 
 export default class App extends React.Component {
@@ -19,10 +19,14 @@ export default class App extends React.Component {
 
   componentDidMount() {
     loadMovies(json => {
-      const codec = new jssha("SHA-256", "TEXT");
-      codec.setHMACKey("abc", "TEXT");
-      codec.update(JSON.stringify(json));
-      const data = codec.getHMAC("HEX");
+      const secret = 'mysecret';
+      const api = '/HelloAPI';
+      const params = {
+        'this': 'is',
+        'my': 'test params',
+      };
+
+      const data = lazada.sign(secret, api, params);
       this.setState({data});
     });
   }
