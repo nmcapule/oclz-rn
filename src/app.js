@@ -19,14 +19,23 @@ export default class App extends React.Component {
 
   componentDidMount() {
     loadMovies(json => {
-      const secret = 'mysecret';
-      const api = '/HelloAPI';
+      const credentials = {
+        domain: 'https://api.lazada.com.ph/rest',
+        appKey: 'the app key',
+        accessToken: 'test token',
+      };
+      const endpoint = '/products/get';
+      const payload = '';
       const params = {
-        'this': 'is',
-        'my': 'test params',
+        'filter': 'all',
+        'offset': 0,
+        'limit': 10,
       };
 
-      const data = lazada.sign(secret, api, params);
+      lazada.request(credentials, endpoint, payload, params)
+          .then(response => console.log(response));
+
+      const data = 'check me out';
       this.setState({data});
     });
   }
