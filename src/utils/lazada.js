@@ -16,10 +16,11 @@ export async function request(credentials, endpoint, payload, extras) {
   const {appKey, accessToken, domain} = credentials;
 
   let parameters = {
+    ...extras,
     'app_key': appKey,
     'sign_method': 'sha256',
-    'timestamp': (new Date()).toISOString(),
-    'partner_id': 'lazop-sdk-python-20180424',
+    'timestamp': Date.now(),
+    'partner_id': 'oclz-js-service',
   };
 
   if (accessToken) {
@@ -27,9 +28,6 @@ export async function request(credentials, endpoint, payload, extras) {
   }
   if (payload) {
     parameters['payload'] = payload;
-  }
-  if (extras) {
-    parameters = {...extras, ...parameters};
   }
   parameters['sign'] = sign(appKey, endpoint, parameters);
 
