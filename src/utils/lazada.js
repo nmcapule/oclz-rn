@@ -13,7 +13,7 @@ export function sign(secret, endpoint, params) {
 }
 
 export async function request(credentials, endpoint, payload, extras) {
-  const {appKey, accessToken, domain} = credentials;
+  const {appKey, appSecret, accessToken, domain} = credentials;
 
   let parameters = {
     ...extras,
@@ -29,7 +29,7 @@ export async function request(credentials, endpoint, payload, extras) {
   if (payload) {
     parameters['payload'] = payload;
   }
-  parameters['sign'] = sign(appKey, endpoint, parameters);
+  parameters['sign'] = sign(appSecret, endpoint, parameters);
 
   const esc = encodeURIComponent;
   const query = Object.keys(parameters)
