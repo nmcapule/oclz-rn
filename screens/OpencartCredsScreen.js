@@ -4,9 +4,9 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import * as constants from '../utils/constants';
 import * as store from '../utils/store';
 
-export class LazadaCredsScreen extends React.Component {
+export class OpencartCredsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Input Lazada Credentials',
+    title: 'Input Opencart Credentials',
   };
 
   constructor(props) {
@@ -18,11 +18,10 @@ export class LazadaCredsScreen extends React.Component {
 
   componentDidMount() {
     (async () => {
-      const creds = await store.getCreds(constants.NS_LAZADA, {
+      const creds = await store.getCreds(constants.NS_OPENCART, {
         domain: '',
-        appKey: '',
-        appSecret: '',
-        accessToken: '',
+        username: '',
+        password: '',
       });
       this.setState({ creds });
     })();
@@ -34,7 +33,7 @@ export class LazadaCredsScreen extends React.Component {
       ...dict,
     };
     this.setState({ creds });
-    store.setCreds(constants.NS_LAZADA, creds);
+    store.setCreds(constants.NS_OPENCART, creds);
   }
 
   render() {
@@ -48,21 +47,16 @@ export class LazadaCredsScreen extends React.Component {
             style={styles.input} 
             value={this.state.creds.domain}
             onChangeText={(text) => this.mergeCreds({domain: text})}/>
-        <Text>App Key</Text>
+        <Text>Username</Text>
         <TextInput 
             style={styles.input} 
-            value={this.state.creds.appKey}
-            onChangeText={(text) => this.mergeCreds({appKey: text})}/>
-        <Text>App Secret</Text>
+            value={this.state.creds.username}
+            onChangeText={(text) => this.mergeCreds({username: text})}/>
+        <Text>Password</Text>
         <TextInput 
             style={styles.input} 
-            value={this.state.creds.appSecret}
-            onChangeText={(text) => this.mergeCreds({appSecret: text})}/>
-        <Text>Access Token</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.accessToken}
-            onChangeText={(text) => this.mergeCreds({accessToken: text})}/>
+            value={this.state.creds.password}
+            onChangeText={(text) => this.mergeCreds({password: text})}/>
       </View>
     );
   }

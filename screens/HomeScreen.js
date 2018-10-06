@@ -23,7 +23,6 @@ export class HomeScreen extends React.Component {
     this.state = {
       data: '',
     };
-    store.getCreds(constants.NS_LAZADA).then(creds => console.log(creds));
   }
 
   componentDidMount() {
@@ -60,6 +59,7 @@ export class HomeScreen extends React.Component {
       <View>
         <Text>{this.state.data}</Text>
         <Button title="Lazada Config" onPress={() => navigate('LazadaCreds')} />
+        <Button title="Opencart Config" onPress={() => navigate('OpencartCreds')} />
       </View>
     );
   }
