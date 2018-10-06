@@ -38,25 +38,32 @@ export class OpencartCredsScreen extends React.Component {
 
   render() {
     if (!this.state.creds) {
-      return (<View><Text>Loading state...</Text></View>);
+      return (
+        <View>
+          <Text>Loading state...</Text>
+        </View>
+      );
     }
     return (
       <View>
         <Text>Domain</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.domain}
-            onChangeText={(text) => this.mergeCreds({domain: text})}/>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.domain}
+          onChangeText={text => this.mergeCreds({ domain: text })}
+        />
         <Text>Username</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.username}
-            onChangeText={(text) => this.mergeCreds({username: text})}/>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.username}
+          onChangeText={text => this.mergeCreds({ username: text })}
+        />
         <Text>Password</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.password}
-            onChangeText={(text) => this.mergeCreds({password: text})}/>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.password}
+          onChangeText={text => this.mergeCreds({ password: text })}
+        />
       </View>
     );
   }

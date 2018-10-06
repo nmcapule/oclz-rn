@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "pretty": "prettier --single-quote --trailing-comma --write **/*.js"
+    "pretty": "prettier --single-quote --trailing-comma=es5 --write **/*.{js,html}"
   },
   "dependencies": {
     "expo": "^30.0.1",

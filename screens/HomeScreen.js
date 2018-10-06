@@ -59,7 +59,14 @@ export class HomeScreen extends React.Component {
       <View>
         <Text>{this.state.data}</Text>
         <Button title="Lazada Config" onPress={() => navigate('LazadaCreds')} />
-        <Button title="Opencart Config" onPress={() => navigate('OpencartCreds')} />
+        <Button
+          title="Opencart Config"
+          onPress={() => navigate('OpencartCreds')}
+        />
+        <Button
+          title="BarCode Scanner Playground"
+          onPress={() => navigate('Scanner')}
+        />
       </View>
     );
   }

@@ -39,30 +39,38 @@ export class LazadaCredsScreen extends React.Component {
 
   render() {
     if (!this.state.creds) {
-      return (<View><Text>Loading state...</Text></View>);
+      return (
+        <View>
+          <Text>Loading state...</Text>
+        </View>
+      );
     }
     return (
       <View>
         <Text>Domain</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.domain}
-            onChangeText={(text) => this.mergeCreds({domain: text})}/>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.domain}
+          onChangeText={text => this.mergeCreds({ domain: text })}
+        />
         <Text>App Key</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.appKey}
-            onChangeText={(text) => this.mergeCreds({appKey: text})}/>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.appKey}
+          onChangeText={text => this.mergeCreds({ appKey: text })}
+        />
         <Text>App Secret</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.appSecret}
-            onChangeText={(text) => this.mergeCreds({appSecret: text})}/>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.appSecret}
+          onChangeText={text => this.mergeCreds({ appSecret: text })}
+        />
         <Text>Access Token</Text>
-        <TextInput 
-            style={styles.input} 
-            value={this.state.creds.accessToken}
-            onChangeText={(text) => this.mergeCreds({accessToken: text})}/>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.accessToken}
+          onChangeText={text => this.mergeCreds({ accessToken: text })}
+        />
       </View>
     );
   }

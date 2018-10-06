@@ -7,11 +7,13 @@ import {
 import {HomeScreen} from './screens/HomeScreen'
 import {LazadaCredsScreen} from './screens/LazadaCredsScreen';
 import {OpencartCredsScreen} from './screens/OpencartCredsScreen';
+import {ScannerScreen} from './screens/ScannerScreen';
 
 const App = createStackNavigator({
   Home: { screen: HomeScreen },
   LazadaCreds: { screen: LazadaCredsScreen },
   OpencartCreds: { screen: OpencartCredsScreen },
+  Scanner: { screen: ScannerScreen },
 });
 
 export default App;
