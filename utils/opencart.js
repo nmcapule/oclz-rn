@@ -1,3 +1,5 @@
+const ENDPOINT_PRODUCTS = 'module/store_sync/listlocalproducts';
+
 export async function request(credentials, endpoint) {
   const { domain, username, password } = credentials;
   const url = `${domain}/common/login`;
@@ -6,7 +8,6 @@ export async function request(credentials, endpoint) {
   formData.append('username', username);
   formData.append('password', password);
   formData.append('redirect', `${domain}${endpoint}`);
-  console.log(formData);
 
   const response = await fetch(url, {
     method: 'POST',
@@ -18,4 +19,8 @@ export async function request(credentials, endpoint) {
   const json = await response.json();
 
   return json;
+}
+
+export async function loadProducts(credentials) {
+  return await request(credentials, ENDPOINT_PRODUCTS);
 }

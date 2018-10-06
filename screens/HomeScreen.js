@@ -55,23 +55,14 @@ export class HomeScreen extends React.Component {
       // opencart
       //     .request(credentials, 'module/store_sync/listlocalproducts')
       //     .then(response => console.log(response));
-
-      await store.registerProduct('testproduct', {
-        model: 'asdasdasdasd',
-        ohshit: {
-          ohno2: 'ohno2',
-        },
-      });
-
-      const products = await store.retrieveProducts();
-      console.log(products);
+      //
+      // const products = await opencart.loadProducts(credentials);
+      // console.log(products);
 
       const data = 'check me out';
       this.setState({ data });
     });
   }
-
-  openLazadaConfig() {}
 
   render() {
     const { navigate } = this.props.navigation;

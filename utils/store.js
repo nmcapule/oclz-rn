@@ -67,3 +67,5 @@ export async function registerProduct(model, attributes) {
   const prod = merge(curr, attributes);
   await AsyncStorage.setItem(key, JSON.stringify(prod));
 }
+
+export async function registerProducts(dict) {}
