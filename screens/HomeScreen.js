@@ -46,7 +46,7 @@ export class HomeScreen extends React.Component {
       // lazada
       //   .request(credentials, endpoint, payload, params)
       //   .then(response => console.log(response));
-      
+
       // const credentials = {
       //   domain: 'http://ohno',
       //   username: 'ohno',
