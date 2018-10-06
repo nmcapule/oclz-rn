@@ -3,6 +3,7 @@ import { Button, Text, View } from 'react-native';
 
 import * as constants from '../utils/constants';
 import * as lazada from '../utils/lazada';
+import * as opencart from '../utils/opencart';
 import * as store from '../utils/store';
 
 async function loadMovies(cb) {
@@ -45,6 +46,15 @@ export class HomeScreen extends React.Component {
       // lazada
       //   .request(credentials, endpoint, payload, params)
       //   .then(response => console.log(response));
+      
+      // const credentials = {
+      //   domain: 'http://ohno',
+      //   username: 'ohno',
+      //   password: 'apassword!',
+      // };
+      // opencart
+      //     .request(credentials, 'module/store_sync/listlocalproducts')
+      //     .then(response => console.log(response));
 
       const data = 'check me out';
       this.setState({ data });
