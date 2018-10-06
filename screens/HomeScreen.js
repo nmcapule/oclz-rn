@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 
 import * as constants from '../utils/constants';
 import * as lazada from '../utils/lazada';
@@ -12,6 +12,10 @@ async function loadMovies(cb) {
 }
 
 export class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Welcome',
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -46,10 +50,15 @@ export class HomeScreen extends React.Component {
     });
   }
 
+  openLazadaConfig() {
+  }
+
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View>
         <Text>{this.state.data}</Text>
+        <Button title="Lazada Config" onPress={() => navigate('LazadaCreds')} />
       </View>
     );
   }
