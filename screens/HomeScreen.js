@@ -27,7 +27,7 @@ export class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    loadMovies(json => {
+    loadMovies(async json => {
       // const credentials = {
       //   domain: 'https://api.lazada.com.ph/rest',
       //   appKey: 'the app key',
@@ -55,6 +55,16 @@ export class HomeScreen extends React.Component {
       // opencart
       //     .request(credentials, 'module/store_sync/listlocalproducts')
       //     .then(response => console.log(response));
+
+      await store.registerProduct('testproduct', {
+        model: 'asdasdasdasd',
+        ohshit: {
+          ohno2: 'ohno2',
+        },
+      });
+
+      const products = await store.retrieveProducts();
+      console.log(products);
 
       const data = 'check me out';
       this.setState({ data });

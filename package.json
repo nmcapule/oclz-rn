@@ -10,6 +10,7 @@
     "pretty": "prettier --single-quote --trailing-comma=es5 --write **/*.{js,html}"
   },
   "dependencies": {
+    "deepmerge": "^2.2.1",
     "expo": "^30.0.1",
     "jssha": "^2.3.1",
     "react": "16.3.1",
