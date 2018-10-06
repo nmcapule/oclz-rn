@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "pretty": "prettier --single-quote --trailing-comma --write **/*.js"
   },
   "dependencies": {
     "expo": "^30.0.1",
