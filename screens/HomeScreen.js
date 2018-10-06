@@ -28,24 +28,24 @@ export class HomeScreen extends React.Component {
 
   componentDidMount() {
     loadMovies(json => {
-      const credentials = {
-        domain: 'https://api.lazada.com.ph/rest',
-        appKey: 'the app key',
-        appSecret: 'the app secret',
-        accessToken: 'test token',
-      };
-      const endpoint = '/products/get';
-      const payload = '';
-      const params = {
-        filter: 'all',
-        offset: 0,
-        limit: 10,
-      };
-      store.setCreds(constants.NS_LAZADA, credentials);
+      // const credentials = {
+      //   domain: 'https://api.lazada.com.ph/rest',
+      //   appKey: 'the app key',
+      //   appSecret: 'the app secret',
+      //   accessToken: 'test token',
+      // };
+      // const endpoint = '/products/get';
+      // const payload = '';
+      // const params = {
+      //   filter: 'all',
+      //   offset: 0,
+      //   limit: 10,
+      // };
+      // store.setCreds(constants.NS_LAZADA, credentials);
 
-      lazada
-        .request(credentials, endpoint, payload, params)
-        .then(response => console.log(response));
+      // lazada
+      //   .request(credentials, endpoint, payload, params)
+      //   .then(response => console.log(response));
 
       const data = 'check me out';
       this.setState({ data });
