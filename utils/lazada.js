@@ -1,4 +1,5 @@
 import jssha from 'jssha';
+import moment from 'moment';
 
 const ENDPOINT_ORDERS = '/orders/get';
 const ENDPOINT_ORDERS_ITEMS = '/orders/items/get';
@@ -69,23 +70,53 @@ export async function request(credentials, endpoint, extras, payload) {
 /**
  * Loads all active Lazada orders.
  * @param  {Object} credentials Lazada credentials.
+ * @param  {Dict} extras        Additional request parameters.
  * @return {Array}              List of orders.
  */
-export async function getActiveOrders(credentials) {
-  const response = await request(credentials, ENDPOINT_ORDERS);
-  if (response['code'] && response['code'] != '0') {
-    throw `Get active orders: ${response['code']}: ${response['message']}`;
-  }
+export async function getActiveOrders(credentials, extras) {
+  // Date format in this particular endpoint -- because Lazada, that's why.
+  const DATE_FMT = 'YYYY-MM-DD HH:mm:ss ZZ';
+  // Offset and limits consts.
+  const LIMIT = 100;
+
+  extras = {
+    ['created_after']: moment()
+      .subtract(7, 'days')
+      .toISOString(),
+    ['offset']: 0,
+    ['limit']: LIMIT,
+    ['sort_by']: 'created_at',
+    ...extras,
+  };
+
   // Trim down what we need from the orders response object.
-  const orders = response['data']['orders'].map(order => ({
+  const extract = order => ({
     id: Number(order['order_id']),
     number: Number(order['order_number']),
-    customer: order['customer_last_name'],
-    status: order['status'],
+    customer: `${order['customer_first_name']} ${order['customer_last_name']}`,
+    status: order['statuses'],
     price: Number(order['price']),
-    created: new Date(Number(order['created_at'])),
-    updated: new Date(Number(order['updated_at'])),
-  }));
+    created: moment(order['created_at'], DATE_FMT).toISOString(),
+    updated: moment(order['updated_at'], DATE_FMT).toISOString(),
+  });
+
+  let orders = [];
+  while (true) {
+    const response = await request(credentials, ENDPOINT_ORDERS, extras);
+    if (response['code'] && response['code'] != '0') {
+      throw `Get active orders: ${response['code']}: ${response['message']}`;
+    }
+
+    // If no more results, break out of loop.
+    if (!response['data']['count']) {
+      break;
+    }
+
+    orders = orders.concat(response['data']['orders'].map(extract));
+
+    // Bump offset!
+    extras['offset'] += LIMIT;
+  }
 
   return orders;
 }
@@ -94,9 +125,10 @@ export async function getActiveOrders(credentials) {
  * Retrieves items for the given order ids.
  * @param  {Object} credentials     Lazada credentials.
  * @param  {Array<number>} orderIds List of order ids (duh).
+ * @param  {Dict} extras            Additional request parameters.
  * @return {Dict}                   Lookup table for items shop SKU with order id as key.
  */
-export async function getOrdersItems(credentials, orderIds) {
+export async function getOrdersItems(credentials, orderIds, extras) {
   const encodedIds = JSON.stringify(orderIds);
   const response = await request(credentials, ENDPOINT_ORDERS_ITEMS, {
     // Get away with prettier's stupid formatting of Object keys.

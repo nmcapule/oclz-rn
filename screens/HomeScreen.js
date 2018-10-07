@@ -48,7 +48,7 @@ export class HomeScreen extends React.Component {
       //   .then(response => console.log(response));
 
       const orders = await lazada.getActiveOrders(credentials);
-      console.log(orders);
+      console.log(orders.length);
 
       // const credentials = {
       //   domain: 'http://ohno',
