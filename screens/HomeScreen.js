@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
+import moment from 'moment';
 
 import * as constants from '../utils/constants';
 import * as lazada from '../utils/lazada';
@@ -30,25 +31,31 @@ export class HomeScreen extends React.Component {
     loadMovies(async json => {
       const credentials = {
         domain: 'https://api.lazada.com.ph/rest',
-        appKey: 'the app key',
-        appSecret: 'the app secret',
-        accessToken: 'test token',
+        appKey: '',
+        appSecret: '',
+        accessToken: '',
       };
-      // const endpoint = '/products/get';
-      // const payload = '';
+      store.setCreds(constants.NS_LAZADA, credentials);
+
       // const params = {
-      //   filter: 'all',
-      //   offset: 0,
-      //   limit: 10,
+      //   ['filter']: 'all',
+      //   ['offset']: 0,
+      //   ['limit']: 100,
       // };
-      // store.setCreds(constants.NS_LAZADA, credentials);
+      // const endpoint = '/products/get';
+      // const response = await lazada.request(credentials, endpoint, params)
+      // console.log(response);
 
-      // lazada
-      //   .request(credentials, endpoint, payload, params)
-      //   .then(response => console.log(response));
+      const products = await lazada.getProducts(credentials);
+      console.log(products.filter(p => !p.model));
 
-      const orders = await lazada.getActiveOrders(credentials);
-      console.log(orders.length);
+      // const orders = await lazada.getActiveOrders(credentials, {
+      //   ['created_after']: moment().subtract(1, 'days').toISOString(),
+      // });
+      // const orderIds = orders.map(order => order.id);
+      // console.log(orderIds);
+      // const items = await lazada.getOrdersItems(credentials, orderIds);
+      // console.log(items);
 
       // const credentials = {
       //   domain: 'http://ohno',

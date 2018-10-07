@@ -1,8 +1,13 @@
 import jssha from 'jssha';
 import moment from 'moment';
 
+// Used lazada endpoints.
 const ENDPOINT_ORDERS = '/orders/get';
 const ENDPOINT_ORDERS_ITEMS = '/orders/items/get';
+const ENDPOINT_PRODUCTS = '/products/get';
+
+// Default offset and limits consts.
+const LIMIT = 50;
 
 /**
  * Generates the sign for the input request to Lazada Open API.
@@ -68,6 +73,49 @@ export async function request(credentials, endpoint, extras, payload) {
 }
 
 /**
+ * Get all Lazada products.
+ * @param  {Object} credentials Lazada credentials.
+ * @param  {Dict} extras        Additional request parameters.
+ * @return {Array}              List of products.
+ */
+export async function getProducts(credentials, extras) {
+  extras = {
+    ['filter']: 'all',
+    ['offset']: 0,
+    ['limit']: LIMIT,
+    ...extras,
+  };
+
+  // Trim down what we need from the products response object.
+  const extract = product => ({
+    model: product['skus'][0]['SellerSku'],
+    itemId: product['item_id'],
+    skus: product['skus'][0],
+  });
+
+  let products = [];
+  while (true) {
+    const response = await request(credentials, ENDPOINT_PRODUCTS, extras);
+    if (response['code'] && response['code'] != '0') {
+      throw `Get active products: ${response['code']}: ${response['message']}`;
+    }
+
+    // If no more results, break out of loop.
+    if (!response['data']['products'] || !response['data']['products'].length) {
+      break;
+    }
+    products = products.concat(response['data']['products'].map(extract));
+
+    // Bump offset!
+    extras['offset'] += LIMIT;
+
+    console.log(`Loaded ${products.length} products`);
+  }
+
+  return products;
+}
+
+/**
  * Loads all active Lazada orders.
  * @param  {Object} credentials Lazada credentials.
  * @param  {Dict} extras        Additional request parameters.
@@ -76,9 +124,6 @@ export async function request(credentials, endpoint, extras, payload) {
 export async function getActiveOrders(credentials, extras) {
   // Date format in this particular endpoint -- because Lazada, that's why.
   const DATE_FMT = 'YYYY-MM-DD HH:mm:ss ZZ';
-  // Offset and limits consts.
-  const LIMIT = 100;
-
   extras = {
     ['created_after']: moment()
       .subtract(7, 'days')
@@ -126,7 +171,7 @@ export async function getActiveOrders(credentials, extras) {
  * @param  {Object} credentials     Lazada credentials.
  * @param  {Array<number>} orderIds List of order ids (duh).
  * @param  {Dict} extras            Additional request parameters.
- * @return {Dict}                   Lookup table for items shop SKU with order id as key.
+ * @return {Dict}                   Lookup table for items SKU with order id as key.
  */
 export async function getOrdersItems(credentials, orderIds, extras) {
   const encodedIds = JSON.stringify(orderIds);
@@ -139,9 +184,9 @@ export async function getOrdersItems(credentials, orderIds, extras) {
   }
 
   const table = {};
-  for (const order in response['data']) {
+  for (const order of response['data']) {
     const key = order['order_id'];
-    table[key] = order['order_items'].map(item => item['shop_sku']);
+    table[key] = order['order_items'].map(item => item['sku']);
   }
 
   return table;
