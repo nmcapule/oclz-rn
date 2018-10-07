@@ -29,13 +29,13 @@ export class HomeScreen extends React.Component {
 
   componentDidMount() {
     loadMovies(async json => {
-      const credentials = {
-        domain: 'https://api.lazada.com.ph/rest',
-        appKey: '',
-        appSecret: '',
-        accessToken: '',
-      };
-      store.setCreds(constants.NS_LAZADA, credentials);
+      // const credentials = {
+      //   domain: 'https://api.lazada.com.ph/rest',
+      //   appKey: '',
+      //   appSecret: '',
+      //   accessToken: '',
+      // };
+      // store.setCreds(constants.NS_LAZADA, credentials);
 
       // const params = {
       //   ['filter']: 'all',
@@ -46,8 +46,8 @@ export class HomeScreen extends React.Component {
       // const response = await lazada.request(credentials, endpoint, params)
       // console.log(response);
 
-      const products = await lazada.getProducts(credentials);
-      console.log(products.filter(p => !p.model));
+      // const products = await lazada.getProducts(credentials);
+      // console.log(products.filter(p => !p.model));
 
       // const orders = await lazada.getActiveOrders(credentials, {
       //   ['created_after']: moment().subtract(1, 'days').toISOString(),

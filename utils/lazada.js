@@ -131,6 +131,7 @@ export async function getActiveOrders(credentials, extras) {
     ['offset']: 0,
     ['limit']: LIMIT,
     ['sort_by']: 'created_at',
+    ['sort_direction']: 'DESC',
     ...extras,
   };
 
@@ -138,7 +139,10 @@ export async function getActiveOrders(credentials, extras) {
   const extract = order => ({
     id: Number(order['order_id']),
     number: Number(order['order_number']),
-    customer: `${order['customer_first_name']} ${order['customer_last_name']}`,
+    customer:
+      `${order['address_billing']['first_name']} ` +
+      `${order['address_billing']['last_name']} / ` +
+      `${order['customer_first_name']} ${order['customer_last_name']}`,
     status: order['statuses'],
     price: Number(order['price']),
     created: moment(order['created_at'], DATE_FMT).toISOString(),

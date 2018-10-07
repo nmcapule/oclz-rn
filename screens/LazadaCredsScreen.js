@@ -6,7 +6,7 @@ import * as store from '../utils/store';
 
 export class LazadaCredsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Input Lazada Credentials',
+    title: 'Lazada Creds',
   };
 
   constructor(props) {

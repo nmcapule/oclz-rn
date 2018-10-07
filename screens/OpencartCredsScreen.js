@@ -6,7 +6,7 @@ import * as store from '../utils/store';
 
 export class OpencartCredsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Input Opencart Credentials',
+    title: 'Opencart Creds',
   };
 
   constructor(props) {
