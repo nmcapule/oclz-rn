@@ -36,7 +36,6 @@ export class LazadaCredsScreen extends React.Component {
       ...dict,
     };
     this.setState({ creds });
-    console.log(creds);
     await store.setCreds(constants.NS_LAZADA, creds);
   }
 
@@ -71,6 +70,8 @@ export class LazadaCredsScreen extends React.Component {
         <Text>Access Token</Text>
         <TextInput
           style={styles.input}
+          multiline={true}
+          numberOfLines={4}
           value={this.state.creds.accessToken}
           onChangeText={text => this.mergeCreds({ accessToken: text })}
         />

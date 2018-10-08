@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {
   Alert,
+  Button,
   RefreshControl,
   SectionList,
   StyleSheet,
@@ -16,9 +17,15 @@ import * as store from '../utils/store';
 import { TEMPORARY_BOX_LOOKUP as tmpBox } from '../utils/boxmap';
 
 export class LazadaOrdersScreen extends React.Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Lazada Orders',
-  };
+    headerRight: (
+      <Button
+        onPress={() => navigation.navigate('LazadaCreds')}
+        title="Creds"
+      />
+    ),
+  });
 
   constructor(props) {
     super(props);
