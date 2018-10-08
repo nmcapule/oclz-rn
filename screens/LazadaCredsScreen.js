@@ -16,25 +16,28 @@ export class LazadaCredsScreen extends React.Component {
     };
   }
 
-  componentDidMount() {
-    (async () => {
-      const creds = await store.getCreds(constants.NS_LAZADA, {
-        domain: '',
-        appKey: '',
-        appSecret: '',
-        accessToken: '',
-      });
-      this.setState({ creds });
-    })();
+  async componentDidMount() {
+    const creds = await store.getCreds(constants.NS_LAZADA, {
+      domain: 'https://api.lazada.com.ph/rest',
+      appKey: '',
+      appSecret: '',
+      accessToken: '',
+    });
+    this.setState({ creds });
   }
 
-  mergeCreds(dict) {
+  async componentWillUnmount() {
+    await this.mergeCreds();
+  }
+
+  async mergeCreds(dict) {
     const creds = {
       ...this.state.creds,
       ...dict,
     };
     this.setState({ creds });
-    store.setCreds(constants.NS_LAZADA, creds);
+    console.log(creds);
+    await store.setCreds(constants.NS_LAZADA, creds);
   }
 
   render() {

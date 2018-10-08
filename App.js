@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {
-  createBottomTabNavigator,
+  createStackNavigator,
 } from 'react-navigation';
 
 // import {HomeScreen} from './screens/HomeScreen'
@@ -10,7 +10,7 @@ import {OpencartCredsScreen} from './screens/OpencartCredsScreen';
 import {ScannerScreen} from './screens/ScannerScreen';
 import {LazadaOrdersScreen} from './screens/LazadaOrdersScreen';
 
-const App = createBottomTabNavigator({
+const App = createStackNavigator({
   LazadaOrders: { screen: LazadaOrdersScreen },
   // Home: { screen: HomeScreen },
   LazadaCreds: { screen: LazadaCredsScreen },

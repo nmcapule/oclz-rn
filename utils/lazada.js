@@ -143,7 +143,9 @@ export async function getActiveOrders(credentials, extras) {
       `${order['address_billing']['first_name']} ` +
       `${order['address_billing']['last_name']} / ` +
       `${order['customer_first_name']} ${order['customer_last_name']}`,
-    status: order['statuses'],
+    status: Array.isArray(order['statuses'])
+      ? order['statuses'][0]
+      : order['statuses'],
     price: Number(order['price']),
     created: moment(order['created_at'], DATE_FMT).toISOString(),
     updated: moment(order['updated_at'], DATE_FMT).toISOString(),
