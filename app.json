@@ -26,6 +26,9 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "package": "ph.nmcapule.oclz.rn"
+    },
     "githubUrl": "https://github.com/nmcapule/oclz-rn"
   }
 }

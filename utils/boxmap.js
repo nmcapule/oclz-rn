@@ -1,3 +1,20 @@
+export async function loadBoxLookup(credentials) {
+  const docId = credentials.boxDocId;
+  const url = `https://docs.google.com/spreadsheets` +
+      `/d/e/${docId}/pub?gid=1233627053&single=true&output=csv`
+  const response = await fetch(url, { mode: 'no-cors' });
+  const text = await response.text();
+
+  const lookup = {};
+  const lines = text.split('\n');
+  for (const line of lines) {
+    const [sku, box] = line.split(',');
+    lookup[sku] = box;
+  }
+
+  return lookup;
+}
+
 // TODO(nmcapule): Don't hardcode. Retrieve from proper sources.
 export const TEMPORARY_BOX_LOOKUP = {
   ['AF']: '1',

@@ -5,6 +5,9 @@ import { BarCodeScanner, Permissions } from 'expo';
 export class ScannerScreen extends React.Component {
   state = {
     hasCameraPermission: null,
+    type: null,
+    data: null,
+    box: '',
   };
 
   async componentWillMount() {
@@ -22,16 +25,27 @@ export class ScannerScreen extends React.Component {
       return <Text>No access to camera</Text>;
     }
     return (
-      <View style={{ flex: 1 }}>
-        <BarCodeScanner
-          onBarCodeScanned={this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFill}
-        />
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View>
+          <BarCodeScanner
+            onBarCodeScanned={this.handleBarCodeScanned}
+            style={{height: 400}}
+          />
+        </View>
+        <View>
+          <Text>SKU: {this.state.data}</Text>
+          <Text>Box: {this.state.box}</Text>
+        </View>
       </View>
     );
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    let box = 'Unknown Box';
+    const lookup = this.props.navigation.getParam('lookup', {});
+    if (lookup) {
+      box = lookup[data];
+    }
+    this.setState({ type, data, box });
   };
 }

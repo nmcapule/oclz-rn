@@ -14,7 +14,7 @@ import {
 import * as constants from '../utils/constants';
 import * as lazada from '../utils/lazada';
 import * as store from '../utils/store';
-import { TEMPORARY_BOX_LOOKUP as tmpBox } from '../utils/boxmap';
+import { loadBoxLookup, TEMPORARY_BOX_LOOKUP as tmpBox } from '../utils/boxmap';
 
 export class LazadaOrdersScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -36,6 +36,7 @@ export class LazadaOrdersScreen extends React.Component {
       ordersItems: null,
       sections: null,
       refreshing: false,
+      lookup: {},
     };
 
     this.refreshSub = null;
@@ -58,6 +59,8 @@ export class LazadaOrdersScreen extends React.Component {
     this.setState({ refreshing: true });
 
     try {
+      await this._loadBoxLookup();
+
       await this._loadOrders();
       this._attachOrdersItems();
       this._computeSectionedOrders();
@@ -134,12 +137,33 @@ export class LazadaOrdersScreen extends React.Component {
     this.setState({ sections });
   }
 
-  _keyExtractor({ id }) {
+  _loadBoxLookup = async () => {
+    const lookup = await loadBoxLookup(this.state.credentials);
+    this.setState({ lookup });
+  }
+
+  _keyExtractor = ({ id }) => {
     return String(id);
   }
 
-  _renderItem({ item, separators }) {
-    return <OrderContainer item={item} />;
+  _onItemPress = (item) => {
+    const {lookup} = this.state;
+    Alert.alert(
+      `Order ${item.id}`,
+      item.items
+        .map(v => `${v}: @box "${lookup[v] || '<unknown box>'}"`)
+        .join('\n')
+    );
+    const box = this.state.lookup[item];
+  }
+    
+  _renderItem = ({ item, separators }) => {
+    return (
+      <OrderContainer 
+        item={item}
+        onItemPress={this._onItemPress.bind(this)} 
+      />
+    );
   }
 
   _renderSectionHeader({ section: { title } }) {
@@ -156,6 +180,14 @@ export class LazadaOrdersScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
+        <View style={{flexDirection: 'column'}}>
+          <Button
+            onPress={() => this.props.navigation.navigate('Scanner', {
+              lookup: this.state.lookup,
+            })}
+            title="Bar Code Scanner"
+          />
+        </View>
         <SectionList
           sections={this.state.sections}
           keyExtractor={this._keyExtractor}
@@ -174,15 +206,6 @@ export class LazadaOrdersScreen extends React.Component {
 }
 
 class OrderContainer extends React.PureComponent {
-  _onPress() {
-    Alert.alert(
-      `Order ${this.props.item.id}`,
-      this.props.item.items
-        .map(v => `${v}: @box "${tmpBox[v] || '<unknown box>'}"`)
-        .join('\n')
-    );
-  }
-
   render() {
     const { item } = this.props;
 
@@ -207,7 +230,7 @@ class OrderContainer extends React.PureComponent {
     return (
       <TouchableHighlight
         style={styles.item}
-        onPress={this._onPress.bind(this)}
+        onPress={() => this.props.onItemPress(this.props.item)}
       >
         <View>
           <View

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import * as constants from '../utils/constants';
 import * as store from '../utils/store';
@@ -13,6 +13,8 @@ export class LazadaCredsScreen extends React.Component {
     super(props);
     this.state = {
       creds: null,
+      credsSource: '',
+      showModal: false,
     };
   }
 
@@ -22,6 +24,7 @@ export class LazadaCredsScreen extends React.Component {
       appKey: '',
       appSecret: '',
       accessToken: '',
+      boxDocId: '',
     });
     this.setState({ creds });
   }
@@ -39,6 +42,17 @@ export class LazadaCredsScreen extends React.Component {
     await store.setCreds(constants.NS_LAZADA, creds);
   }
 
+  async loadCredsSource() {
+    const id = this.state.credsSource;
+    const url = `https://docs.google.com/spreadsheets` +
+        `/d/e/${id}/pub?gid=0&single=true&output=csv`
+    const response = await fetch(url, { mode: 'no-cors' });
+    const text = await response.text();
+    const [domain, appKey, appSecret, accessToken, boxDocId] = text.split(',');
+
+    await this.mergeCreds({domain, appKey, appSecret, accessToken, boxDocId});
+  }
+
   render() {
     if (!this.state.creds) {
       return (
@@ -48,7 +62,7 @@ export class LazadaCredsScreen extends React.Component {
       );
     }
     return (
-      <View>
+      <View style={{padding: 12}}>
         <Text>Domain</Text>
         <TextInput
           style={styles.input}
@@ -69,12 +83,27 @@ export class LazadaCredsScreen extends React.Component {
         />
         <Text>Access Token</Text>
         <TextInput
-          style={styles.input}
           multiline={true}
           numberOfLines={4}
           value={this.state.creds.accessToken}
           onChangeText={text => this.mergeCreds({ accessToken: text })}
         />
+        <Text>Box Doc Id</Text>
+        <TextInput
+          style={styles.input}
+          value={this.state.creds.boxDocId}
+          onChangeText={text => this.mergeCreds({ boxDocId: text })}
+        />
+        <View style={{marginTop: 64, flexDirection: "row"}}>
+          <TextInput
+            style={[styles.input, {flex: 1}]}
+            onChangeText={credsSource => this.setState({ credsSource })}
+          />
+          <Button 
+            onPress={this.loadCredsSource.bind(this)}
+            title="???">
+          </Button>
+        </View>
       </View>
     );
   }
